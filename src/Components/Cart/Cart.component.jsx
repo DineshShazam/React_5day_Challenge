@@ -1,11 +1,13 @@
 import React from 'react'
 import { useStateValue } from '../../State/StateProvider'
+import CartProduct from '../CartProduct/CartProduct'
 import Subtotal from '../Subtotal/Subtotal'
 import './Cart.style.css'
+import FlipMove from 'react-flip-move';
 
 const Cart = () => {
 
-    const [{Courses},dispatch] = useStateValue();
+    const [{Courses}] = useStateValue();
 
     return (
         <div className="checkout">
@@ -15,7 +17,13 @@ const Cart = () => {
                 <div>
                     <h2 className="checkout_title">Your Course Bucket</h2>
                 </div>
-                
+                <FlipMove>
+                {
+                    Courses.map((item) => (
+                        <CartProduct key={item.id} value={item} />
+                    ))
+                }
+                </FlipMove>
             </div>
 
             <div className="checkout_right">

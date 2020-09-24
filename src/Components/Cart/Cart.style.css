@@ -10,8 +10,14 @@
     gap: 10px;
     background-color: whitesmoke;
     height: max-content;
-    width: 100%;
+    /* width: 100%; */
 }
+
+.checkout_right {
+    padding: 20px;
+}
+
+
 
 .checkout_title {
     margin-right: 10px;

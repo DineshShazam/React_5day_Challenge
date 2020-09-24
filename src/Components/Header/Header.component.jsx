@@ -6,11 +6,24 @@ import {Link} from 'react-router-dom'
 import SearchIcon from '@material-ui/icons/Search';
 import ShopIcon from '@material-ui/icons/Shop';
 import { useStateValue } from '../../State/StateProvider';
+import { auth } from '../../firebase/firebase';
 
 
 function Header() {
 
-    const [state,dispatch] = useStateValue();
+    const [{Courses,userDetails},dispatch] = useStateValue();
+    
+    
+
+    const handleauthentication = () => {
+        if(userDetails) {
+            auth.signOut();
+            dispatch({
+                type:'CLEAR_ITEM',
+                payload: []
+            })
+        }
+    }
 
     return (
         <div className='header'>
@@ -21,17 +34,19 @@ function Header() {
             </div>
 
             <div className="header_search">
-                <input type='text' className='header_input' />
+                <input type='search' className='header_input' />
                 <SearchIcon className='header_searchIcon' />
             </div>
 
             <div className="header_nav">
 
-                <div className="header_options">
-                    <span className='nav_1'>Hello </span>
-
-                    <span className='nav_2'>Guest </span>
-                </div>
+                <Link to={!userDetails && '/login'}>
+                    <div className="header_options" onClick={handleauthentication}>
+                        <span className='nav_1'>{userDetails ? 'Hello '+userDetails.email : 'Hello Guest'} </span>
+                        <span className='nav_2'>{userDetails ? 'signOut' : 'signIn'} </span>
+                    </div>
+                </Link>
+                
 
                 <div className="header_options">
                     <span className='nav_1'>Returns </span>
@@ -48,7 +63,7 @@ function Header() {
                 <div className="header_cart">
                     <Link to='/cart'>
                     <ShopIcon />
-                    <span className='nav_2 cart_count'>{state.Courses?.length}</span>
+                    <span className='nav_2 cart_count'>{Courses?.length}</span>
                     </Link>
                 </div>
 

@@ -13,6 +13,8 @@
     object-fit: contain;
     margin: 0 20px;
     margin-top: 18px;
+    margin-right: 100px;
+    padding: 20px;
 }
 
 .header_logo img {
@@ -29,14 +31,15 @@
 }
 
 .header_input {
-    padding: 9px;
+    padding: 9px;   
     border: none;
-    width: 100%;
+    width: 80%;
 }
 
 .header_searchIcon {
     padding: 5px;
-     height: 24px !important; 
+    height: 35px !important;
+    width: 35px !important;
     background-color: #cd9042;
 }
 
@@ -50,10 +53,11 @@ Link {
 }
 
 .header_options, a {
+    text-decoration: none;
     display: flex;
     flex-direction: column;
     margin-left: 10px;
-    margin-top: 10px;
+    /* margin-top: 10px; */
     color: white;
 }
 

@@ -1,5 +1,9 @@
+import Product_Data from '../ProductData/productData'
+
 export const initialState = {
-    Courses:[]
+    Courses:[],
+    userDetails:null,
+    Products:Product_Data
 }
 
 const reducer = (state,action) => {
@@ -9,7 +13,24 @@ const reducer = (state,action) => {
                 ...state,
                 Courses: [...state.Courses,action.payload]
             }
-            
+        
+        case 'REMOVE_ITEM' :
+            return {
+                ...state,
+                Courses: state.Courses.filter(item => item.id !== action.payload)
+            }
+
+        case 'ADD_USER' :
+            return {
+                ...state,
+                userDetails: action.payload
+            }
+
+        case 'CLEAR_ITEM' :
+            return {
+                ...state,
+                Courses: action.payload
+            }
     
         default:
             return state;

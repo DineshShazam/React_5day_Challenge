@@ -5,12 +5,28 @@ import './product.style.css'
 
 
 
-const Prodcut = ({id,title,price,imageUrl,desc,rating}) => {
+const Prodcut = ({Pvalue:{id,title,price,imageUrl,desc,rating}}) => {
 
-    const [state,dispatch] = useStateValue();
+    // const {id,title,price,imageUrl,desc,rating} = Pvalue
+
+    const [{Courses,userDetails},dispatch] = useStateValue();
 
     const addCart = () => {
-        console.log('add to cart method called')
+        
+        if(!userDetails) {
+            alert('Please login and add the items');
+            return;
+        }
+
+        const itemCheck = Courses.find(value =>value.id === id);
+
+        
+
+        if(itemCheck) {
+            alert('Course has been already added to the cart');
+            return;
+        }
+
         dispatch({
             type:'ADD_TO_CART',
             payload:{
@@ -24,7 +40,7 @@ const Prodcut = ({id,title,price,imageUrl,desc,rating}) => {
     }
 
     return (
-        <div className="product">
+        <div className="animate__animated animate__flipInX product">
 
             <div className="product_info">
 
@@ -47,10 +63,15 @@ const Prodcut = ({id,title,price,imageUrl,desc,rating}) => {
                         {/* <span class="fa fa-star checked"></span> */}
                      </div>
                     <div className="description">{desc}</div>
-                   
+                    
+                    <div className="prdct_button">
+                        <CustomButton type='submit' onClick={addCart}>Add To Cart</CustomButton>
+                        <CustomButton type='submit' >Buy Now</CustomButton>
+                    </div>
                 </div>
+               
             </div>
-            <CustomButton type='submit' onClick={addCart}>Add To Cart</CustomButton>
+            
         
         </div>
     )
