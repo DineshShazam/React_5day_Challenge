@@ -102,3 +102,37 @@ margin-bottom: -150px
 
 /// DAY-4 ///
 
+// STRIPE PAYMENT
+    - npm i @stripe/stripe-js
+    - npm i @stripe/react-stripe-js
+
++ APP.js
+    - import {loadStripe} "@stripe/stripe-js"
+    - import {Element} "@stripe/react-stripe-js"
+
+    const promise = loadstripe('pk_test_51HVHHYKTcLtwblEUgaOifomOW8H77zJbyIdOwtBw5Rix2uWmuGOAAaj1Q2amuSwCL97r9et5hkS1q6G7F1X533JW008BGPN7S7');
+
+    - wrap the checkout page with 
+        + <Elements stripe={promise}>
+            //our component
+            </Element>
+
++ checkout.js
+    - import {cardElement,useStripe,useElements} from '@stripe/react-stripe-js"
+
+    - const stripe = useStripe();
+    - const elements = useElements();
+
+    - <form //handleSubmit>
+        <cardElement //handleChange/>
+      <form>
+
+    - create two state ==> error , disabled
+
+    - handleChange
+        + setDisabled(event.empty)
+        + setError(event.error ? event.error.message : "");
+
+=================================== Cloud Functions
+- to run google cloud function in local
+    firebase emulators:start

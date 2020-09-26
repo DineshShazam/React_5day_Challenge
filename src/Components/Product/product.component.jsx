@@ -12,7 +12,7 @@ const Prodcut = ({Pvalue:{id,title,price,imageUrl,desc,rating}}) => {
     const [{Courses,userDetails},dispatch] = useStateValue();
 
     const addCart = () => {
-        
+       
         if(!userDetails) {
             alert('Please login and add the items');
             return;

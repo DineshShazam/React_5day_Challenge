@@ -18,9 +18,11 @@ const CartProduct = forwardRef(({value:{id,imageUrl,title,price,desc}},ref) => {
     }
 
     return (
+        
         <div ref={ref} className='checkout_product'>
+        
             <img src={imageUrl} alt="item" className="checkoutProduct_image"/>
-
+        
             <div className="checkoutProduct_info">
                 <p className="checkoutProduct_title">{title}</p>
                 <p className="checkoutProduct_price">
@@ -33,6 +35,7 @@ const CartProduct = forwardRef(({value:{id,imageUrl,title,price,desc}},ref) => {
             </div>
             
         </div>
+        
     )
 })
 

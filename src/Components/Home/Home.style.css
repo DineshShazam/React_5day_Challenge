@@ -2,7 +2,7 @@
     width: 100%;
     z-index: -1;
     margin-top: 20px;
-    margin-bottom: -150px;
+    margin-bottom: -380px;
     mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
 }
 

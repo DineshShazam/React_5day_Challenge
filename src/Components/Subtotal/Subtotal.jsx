@@ -3,7 +3,7 @@ import './Subtotal.css'
 import CurrencyFormat from 'react-currency-format'
 import CustomButton from '../../ReusableComponents/Buttons/CustomButton.component'
 import { useStateValue } from '../../State/StateProvider'
-
+import {useHistory} from 'react-router-dom'
 
 function Subtotal({value}) {
    
@@ -11,10 +11,10 @@ function Subtotal({value}) {
     
     const [{Courses},dispatch] = useStateValue();
 
+    const history = useHistory();
+
     const ClearItem = () => {
         
-        
-
         if(Courses.length !== 0) {
             dispatch({
                 type:'CLEAR_ITEM',
@@ -51,7 +51,11 @@ function Subtotal({value}) {
             prefix={'₹ '}
             />
             <div className="chk_button">
-                <CustomButton type='submit'>Checkout</CustomButton>
+                <CustomButton type='submit' onClick={()=>{
+                    Courses.length !== 0 ?
+                    history.push('/checkout') :
+                    alert('Empty Cart')
+                    }}>Checkout</CustomButton>
 
                 <CustomButton type='submit' onClick={ClearItem}>Clear Cart</CustomButton>
             </div>

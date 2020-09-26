@@ -5,10 +5,18 @@ import Header from './Components/Header/Header.component';
 import Home from './Components/Home/Home.component';
 import Cart from './Components/Cart/Cart.component';
 import Login from './Components/Login/Login.component';
+import Checkout from './Components/Checkout/checkout';
+import Orders from './Components/Receipt/orders';
 
 import {Switch,Route} from 'react-router-dom'
 import { auth } from './firebase/firebase';
 import { useStateValue } from './State/StateProvider';
+
+import {loadStripe} from '@stripe/stripe-js'
+import {Elements} from '@stripe/react-stripe-js'
+
+
+const promise = loadStripe('pk_test_51HVHHYKTcLtwblEUgaOifomOW8H77zJbyIdOwtBw5Rix2uWmuGOAAaj1Q2amuSwCL97r9et5hkS1q6G7F1X533JW008BGPN7S7')
 
 
 function App() {
@@ -33,7 +41,7 @@ function App() {
       })
 
     })
-  }, [])
+  },[])
 
 
   return (
@@ -51,7 +59,18 @@ function App() {
           <Login />
         </Route>
 
-        <Route path='/'>
+        <Route exact path='/checkout' >
+           <Header />
+            <Elements stripe={promise}>
+              <Checkout />
+            </Elements>
+        </Route>
+
+        <Route exact path='/orders'>
+          <Orders />
+        </Route>
+
+        <Route path='/'> 
         <Header />
         <Home/>
         </Route>
