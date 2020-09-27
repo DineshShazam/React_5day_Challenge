@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React,{useEffect} from 'react';
 import './App.css';
 
@@ -14,6 +15,7 @@ import { useStateValue } from './State/StateProvider';
 
 import {loadStripe} from '@stripe/stripe-js'
 import {Elements} from '@stripe/react-stripe-js'
+import OrderHistory from './Components/OrderHistory/OrderHistory';
 
 
 const promise = loadStripe('pk_test_51HVHHYKTcLtwblEUgaOifomOW8H77zJbyIdOwtBw5Rix2uWmuGOAAaj1Q2amuSwCL97r9et5hkS1q6G7F1X533JW008BGPN7S7')
@@ -67,7 +69,13 @@ function App() {
         </Route>
 
         <Route exact path='/orders'>
+          <Header />
           <Orders />
+        </Route>
+
+        <Route exact path='/OrderHistory'>
+          <Header />
+          <OrderHistory/>
         </Route>
 
         <Route path='/'> 

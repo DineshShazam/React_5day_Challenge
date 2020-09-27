@@ -6,11 +6,12 @@ import { useStateValue } from '../../State/StateProvider'
 import axios from '../../axios/axios'
 import {useHistory} from 'react-router-dom'
 import { getTotal } from '../../Reducer/reducer'
+import { db } from '../../firebase/firebase'
 
 
 const Checkout = () => {
 
-    const [{Courses},dispatch] = useStateValue();
+    const [{Courses,userDetails,billingAddress},dispatch] = useStateValue();
     const stripe = useStripe();
     const elements = useElements();
 
@@ -30,7 +31,7 @@ const Checkout = () => {
     const [phone,setPhone] = useState('');
 
     const history = useHistory();
-
+ 
     useEffect(() => {
          // need to generate secret key for each user and their payment
          const getClientSecret = async () => {
@@ -48,8 +49,6 @@ const Checkout = () => {
     const handleSubmit = async (e) => {
       e.preventDefault();
 
-      if(fname && address && phone && acctName && address) {
-
         dispatch({
           type:'ADD_BILLING_INFO',
           payload: {fname,address,city,state,zip,phone,acctName}
@@ -64,20 +63,38 @@ const Checkout = () => {
           }
         }).then(({paymentIntent}) => {
           // paymentIntent means paymentConformation
-            console.log(paymentIntent);
           setSucceeded(true);
           setError(null)
           setProcessing(false)
-  
+          console.log(billingAddress);
+
+          db.collection('billingDetails').doc(userDetails?.uid)
+            .set({
+              fname:fname,
+              address:address,
+              city:city,
+              state:state,
+              zip:zip,
+              acctName:acctName,
+              phone:phone
+            })
+
+          // store the orderDetails in the database
+          db.collection('users').doc(userDetails?.uid)
+            .collection('orders').doc(paymentIntent.id)
+            .set({
+              Courses:Courses,
+              amount:paymentIntent.amount,
+              created: paymentIntent.created
+              
+            });
+            dispatch({
+              type:'EMPTY_BASKET'
+            })
           history.replace('/orders');
         }).catch(err => {
           console.log('payment failed',err);
         })
-
-      } else {
-        alert('Please fill out the required fields')
-      }
-
        
     }
 
@@ -96,25 +113,25 @@ const Checkout = () => {
         <div className="row">
           <div className="col-50">
             <h3>Billing Address</h3>
-            <label for="fname"><i className="fa fa-user"></i> Full Name</label>
+            <label><i className="fa fa-user"></i> Full Name</label>
             <input type="text" value={fname} onChange={(e)=>{setFname(e.target.value)}} id="fname" name="firstname" placeholder="John M. Doe" />
            
-            <label for="adr"><i className="fa fa-address-card-o"></i> Address</label>
+            <label><i className="fa fa-address-card-o"></i> Address</label>
             <input type="text" value={address} onChange={(e)=>{setAddress(e.target.value)}} id="adr" name="address" placeholder="542 W. 15th Street"/>
 
-            <label for="city"><i className="fa fa-institution"></i> City</label>
+            <label><i className="fa fa-institution"></i> City</label>
             <input type="text" value={city} onChange={(e)=>{setCity(e.target.value)}} id="city" name="city" placeholder="New York"/>
 
-            <label for="phone"> Phone Number</label>
+            <label> Phone Number</label>
             <input type="text" value={phone} onChange={(e)=>{setPhone(e.target.value)}} id="phone" name="phone" placeholder="+91"/>
 
             <div className="row">
               <div className="col-50">
-                <label for="state">State</label>
+                <label>State</label>
                 <input type="text" value={state} onChange={(e)=>{setState(e.target.value)}} id="state" name="state" placeholder="NY"/>
               </div>
               <div className="col-50">
-                <label for="zip">Zip</label>
+                <label>Zip</label>
                 <input type="text" value={zip} onChange={(e)=>{setZip(e.target.value)}} id="zip" name="zip" placeholder="10001"/>
               </div>
             </div>
@@ -122,14 +139,14 @@ const Checkout = () => {
 
           <div className="col-50">
             <h3>Payment</h3>
-            <label for="fname">Accepted Cards</label>
+            <label>Accepted Cards</label>
             <div className="icon-container">
               <i className="fa fa-cc-visa"></i>
               <i className="fa fa-cc-amex"></i>
               <i className="fa fa-cc-mastercard"></i>
               <i className="fa fa-cc-discover"></i>
             </div>
-            <label for="cname">Name on Card</label>
+            <label>Name on Card</label>
             <input type="text" value={acctName} onChange={(e)=>{setAcctname(e.target.value)}} id="cname" name="cardname" placeholder="John More Doe" autoComplete='off'/>
 
             <CardElement onChange={handleChange} />

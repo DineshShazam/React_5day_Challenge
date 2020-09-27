@@ -86,20 +86,6 @@ margin-bottom: -150px
 
 =========================================
 
-// Deployment firebase process
-
-    - npm i -g firebase-tools
-    - firebase login
-    - firebase init
-        - Hosting
-        - existing project
-        - public directory ? build
-        - singlePage ? Y
-    - npm run build
-    - firebase deploy
-
-=========================================
-
 /// DAY-4 ///
 
 // STRIPE PAYMENT
@@ -136,3 +122,46 @@ margin-bottom: -150px
 =================================== Cloud Functions
 - to run google cloud function in local
     firebase emulators:start
+
+================================ sunday
+// empty your basket
+
+// create firestore database
+
+// store the placed order in firestore
+
+/// pull the value from fireStore and display in orders
+
+    db.collection('users').doc(userid).collection(orders).orderBy('created','desc')
+        .onSnapshot(snap => {
+            snap.docs.map(val => ({
+                id: val.id,
+                data: val.data();
+            }))
+        })
+
+// install moment
+    - moment.unix(order.data.created).format("MMMM Do YYYY, h:mma")
+/// create order history page
+
+===================
+/// deploy cloud function
+
+firebase deploy --only functions
+
+// Deployment application firebase
+
+    - npm i -g firebase-tools
+    - firebase login
+    - firebase init
+        - Hosting
+        - existing project
+        - public directory ? build
+        - singlePage ? Y
+    - npm run build
+    - firebase deploy
+
+/// deploy the application
+
+- npm run build
+- firebase deploy --only hosting

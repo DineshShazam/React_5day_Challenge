@@ -45,6 +45,12 @@ const reducer = (state,action) => {
                 ...state,
                 billingAddress: action.payload
             }
+        
+        case 'EMPTY_BASKET' : 
+            return {
+                ...state,
+                Courses: []
+            }
     
         default:
             return state;

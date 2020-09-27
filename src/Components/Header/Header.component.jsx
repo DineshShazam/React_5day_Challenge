@@ -47,13 +47,12 @@ function Header() {
                     </div>
                 </Link>
                 
-
+                <Link to={'/OrderHistory'}>
                 <div className="header_options">
                     <span className='nav_1'>Returns </span>
-
                     <span className='nav_2'>&orders </span>
                 </div>
-
+                </Link>
                 {/* <div className="header_options">
                     <span className='nav_1'>Your </span>
 

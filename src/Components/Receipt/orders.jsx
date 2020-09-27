@@ -1,11 +1,18 @@
-import React from 'react'
+/* eslint-disable react-hooks/exhaustive-deps */
+import React,{useEffect, useState} from 'react'
+import { db } from '../../firebase/firebase'
 import { getTotal } from '../../Reducer/reducer'
 import { useStateValue } from '../../State/StateProvider'
 import './orders.css'
 
+
 const Orders = () => {
 
-    const [{Courses,userDetails,billingAddress}] = useStateValue();
+    const [{userDetails,billingAddress}] = useStateValue();
+
+    // const [billing,setBilling] =  useState([]);
+    const [orders,SetOrders] = useState([]);
+
     const {fname,address,city,phone,acctName,zip} = billingAddress ;
   
     const today = new Date();
@@ -13,6 +20,45 @@ const Orders = () => {
     const mm = today.getMonth()+1; 
     const yyyy = today.getFullYear();
     const tdy  = dd+'/'+mm+'/'+yyyy;
+
+    // need to fetch the placed order and form the receipt
+
+    useEffect(()=> {
+      if(userDetails) {
+
+        // db.collection('billingDetails').doc(userDetails?.uid)
+        // .onSnapshot(snap => {
+        //   setBilling(snap.map(val => (
+        //     {
+        //       data: val.data()
+        //       // fname:val.fname,
+        //       // acctName:val.acctName,
+        //       // address:val.address,
+        //       // city:val.city,
+        //       // zip:val.zip,
+        //       // phone:val.phone
+        //     }
+        //   )))
+        // })
+
+        db.collection('users').doc(userDetails?.uid)
+          .collection('orders').onSnapshot(snap => {
+            SetOrders(snap.docs.map(val => (
+              {
+                data:val.data()
+              }
+            )))
+          })
+
+      } else {
+        // setBilling([]);
+        SetOrders([]);
+      }
+
+   
+    },[])
+
+    console.log(orders);
 
     return (
       
@@ -49,7 +95,7 @@ const Orders = () => {
                         <div className="col-xs-4 text-right payment-details">
                             <p className="lead marginbottom payment-info">Payment details</p>
                             <p>Date: {tdy}</p>
-                            <p>Total Amount: {getTotal(Courses)}</p>
+                            <p>Total Amount: {getTotal(orders.data?.Courses)}</p>
                             <p>Account Name: {acctName}</p>
                         </div>
         
@@ -69,7 +115,7 @@ const Orders = () => {
 
                             
                               {
-                                Courses.map(val => (
+                                orders.data?.Courses.map(val => (
                                   <tr>
                                   <td className="text-center">{val.id}</td>
                                   <td className="text-right">{val.title}</td>
