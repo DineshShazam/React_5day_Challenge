@@ -4,7 +4,7 @@ import { useStateValue } from '../../State/StateProvider'
 import './CartProduct.css'
 
 
-const CartProduct = forwardRef(({value:{id,imageUrl,title,price,desc}},ref) => {
+const CartProduct = forwardRef(({value:{id,imageUrl,title,price,desc},hideButton},ref) => {
     
     const [,dispatch] = useStateValue();
 
@@ -31,7 +31,13 @@ const CartProduct = forwardRef(({value:{id,imageUrl,title,price,desc}},ref) => {
                 </p>
                 <p className="description">{desc}</p>
                 <br/>
-                <CustomButton type='submit' onClick={removeItem}>Remove</CustomButton>
+                {
+                    hideButton ?
+                    <div></div> : 
+                    <CustomButton type='submit' onClick={removeItem}>Remove</CustomButton>
+                   
+                }
+               
             </div>
             
         </div>

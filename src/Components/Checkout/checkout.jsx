@@ -37,9 +37,13 @@ const Checkout = () => {
          const getClientSecret = async () => {
            const response = await axios({
              method: 'post',
-             url : `/payments/create?total=${getTotal(Courses) * 100}`
+             url : `/payments/create?total=${getTotal(Courses) * 100}`,
+             headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Credentials': true,
+             }
            })
-
+           console.log(response);
            setClientSecret(response.data.clientSecret);
          }
 
